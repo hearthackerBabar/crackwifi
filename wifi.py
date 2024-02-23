@@ -2,6 +2,7 @@ import subprocess
 import json
 import sys
 import time
+import threading
 
 # ASCII logo
 logo = '''
@@ -39,12 +40,16 @@ def scan_available_wifi():
 def loading_animation():
     while True:
         sys.stdout.write('\rScanning... |')
+        sys.stdout.flush()
         time.sleep(0.1)
         sys.stdout.write('\rScanning... /')
+        sys.stdout.flush()
         time.sleep(0.1)
         sys.stdout.write('\rScanning... -')
+        sys.stdout.flush()
         time.sleep(0.1)
         sys.stdout.write('\rScanning... \\')
+        sys.stdout.flush()
         time.sleep(0.1)
 
 if __name__ == "__main__":
