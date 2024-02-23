@@ -9,6 +9,10 @@ import os
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+# ANSI color codes
+GREEN = '\033[92m'  # Green color
+RESET = '\033[0m'    # Reset color
+
 # ASCII logo
 logo = '''
   ____       _      _____       _   
@@ -38,7 +42,7 @@ def scan_available_wifi():
             ssid = network.get('ssid', 'Unknown SSID')
             bssid = network.get('bssid', 'Unknown BSSID')
             # Display in green color
-            print(f"{i}. SSID: \033[92m{ssid}\033[0m, BSSID: \033[92m{bssid}\033[0m")
+            print(f"{i}. SSID: {GREEN}{ssid}{RESET}, BSSID: {GREEN}{bssid}{RESET}")
             # Reduce delay between each network print statement
             time.sleep(0.1)
     except (subprocess.CalledProcessError, json.JSONDecodeError):
@@ -46,10 +50,10 @@ def scan_available_wifi():
 
 def loading_animation():
     while True:
-        sys.stdout.write('\rScanning...')
+        sys.stdout.write(f'\r{GREEN}Scanning WiFi networks...{RESET}')
         sys.stdout.flush()
         time.sleep(0.5)
-        sys.stdout.write('\r           ')
+        sys.stdout.write('\r                        ')
         sys.stdout.flush()
         time.sleep(0.5)
 
@@ -63,9 +67,6 @@ def scan_wifi():
     clear_screen()
     print(logo)
     
-    # Display "Scanning WiFi networks..." in green color
-    print("\033[92mScanning WiFi networks...\033[0m")
-
     loading_thread = threading.Thread(target=loading_animation)
     loading_thread.start()
     scan_available_wifi()
@@ -78,6 +79,7 @@ if __name__ == "__main__":
     print("2. Exit")
     choice = input("Enter your choice: ")
     if choice == '1':
+        print("\nScanning WiFi networks...")
         scan_wifi()
     elif choice == '2':
         print("Exiting...")
