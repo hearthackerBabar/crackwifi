@@ -34,10 +34,10 @@ def scan_available_wifi():
         wifi_info_json = json.loads(wifi_info)
         wifi_networks = wifi_info_json.get('scan_results', [])
         print("\n*AVAILABLE WIFI*")
-        for network in wifi_networks:
+        for i, network in enumerate(wifi_networks[:5], start=1):  # Limit to first 5 networks
             ssid = network.get('ssid', 'Unknown SSID')
             bssid = network.get('bssid', 'Unknown BSSID')
-            print("SSID: {}, BSSID: {}".format(ssid, bssid))
+            print(f"{i}. SSID: {ssid}, BSSID: {bssid}")
             # Reduce delay between each network print statement
             time.sleep(0.1)
     except (subprocess.CalledProcessError, json.JSONDecodeError):
