@@ -3,6 +3,10 @@ import json
 import sys
 import time
 import threading
+import os
+
+# Clear the screen
+os.system('clear')
 
 # ASCII logo
 logo = '''
@@ -19,9 +23,7 @@ def check_wifi_status():
         wifi_info_json = json.loads(wifi_info)
         wifi_state = wifi_info_json.get('state', 'UNKNOWN')
         return wifi_state == 'CONNECTED'
-    except FileNotFoundError:
-        return False
-    except subprocess.CalledProcessError:
+    except (FileNotFoundError, subprocess.CalledProcessError, json.JSONDecodeError):
         return False
 
 def scan_available_wifi():
@@ -34,7 +36,7 @@ def scan_available_wifi():
             ssid = network.get('ssid', 'Unknown SSID')
             bssid = network.get('bssid', 'Unknown BSSID')
             print("SSID: {}, BSSID: {}".format(ssid, bssid))
-    except subprocess.CalledProcessError:
+    except (subprocess.CalledProcessError, json.JSONDecodeError):
         print("Error: Unable to retrieve WiFi network information.")
 
 def loading_animation():
