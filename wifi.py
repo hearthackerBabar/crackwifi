@@ -21,10 +21,13 @@ print(wifi_logo)
 # Display user's IP address
 def get_ip_address():
     try:
-        ip_address = subprocess.check_output(['ifconfig', 'wlan0']).decode('utf-8').split("\n")[1].split("inet ")[1].split(" ")[0]
+        ip_info = subprocess.check_output(['ifconfig', 'wlan0']).decode('utf-8')
+        ip_address = ip_info.split("inet ")[1].split(" ")[0]
         print("Your IP Address: ", ip_address)
-    except IndexError:
+    except subprocess.CalledProcessError:
         print("Error: Unable to retrieve IP address.")
+    except IndexError:
+        print("Error: No IP address found for wlan0.")
 
 # Display all WiFi networks near the device
 def list_nearby_wifi():
