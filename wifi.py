@@ -5,9 +5,6 @@ import time
 import threading
 import os
 
-# Clear the screen
-os.system('clear')
-
 # ASCII logo
 logo = '''
   ____       _      _____       _   
@@ -55,13 +52,18 @@ def loading_animation():
         time.sleep(0.1)
 
 def scan_wifi():
+    # Clear the screen and display the logo
+    os.system('clear')
+    print(logo)
+    
     wifi_status = check_wifi_status()
     if not wifi_status:
         print("Turn On Your Device Wifi")
     else:
-        loading_animation_thread = threading.Thread(target=loading_animation)
-        loading_animation_thread.start()
+        loading_thread = threading.Thread(target=loading_animation)
+        loading_thread.start()
         scan_available_wifi()
+        loading_thread.join()  # Wait for the loading animation to finish
 
 if __name__ == "__main__":
     print(logo)
