@@ -53,9 +53,13 @@ def loading_animation():
         time.sleep(0.1)
 
 def scan_wifi():
-    loading_animation_thread = threading.Thread(target=loading_animation)
-    loading_animation_thread.start()
-    scan_available_wifi()
+    wifi_status = check_wifi_status()
+    if not wifi_status:
+        print("Turn On Your Device Wifi")
+    else:
+        loading_animation_thread = threading.Thread(target=loading_animation)
+        loading_animation_thread.start()
+        scan_available_wifi()
 
 if __name__ == "__main__":
     print(logo)
@@ -63,11 +67,7 @@ if __name__ == "__main__":
     print("2. Exit")
     choice = input("Enter your choice: ")
     if choice == '1':
-        wifi_status = check_wifi_status()
-        if not wifi_status:
-            print("Turn On Your Device Wifi")
-        else:
-            scan_wifi()
+        scan_wifi()
     elif choice == '2':
         print("Exiting...")
         sys.exit()
