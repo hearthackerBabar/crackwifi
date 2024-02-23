@@ -1,4 +1,5 @@
 import subprocess
+import json
 
 # Display WiFi ASCII art logo
 wifi_logo = '''
@@ -21,24 +22,28 @@ print(wifi_logo)
 # Display user's IP address
 def get_ip_address():
     try:
-        ip_info = subprocess.check_output(['ifconfig', 'wlan0']).decode('utf-8')
-        ip_address = ip_info.split("inet ")[1].split(" ")[0]
+        ip_info = subprocess.check_output(['termux-wifi-connectioninfo']).decode('utf-8')
+        ip_info_json = json.loads(ip_info)
+        ip_address = ip_info_json.get('ip', 'Unknown')
         print("Your IP Address: ", ip_address)
     except subprocess.CalledProcessError:
         print("Error: Unable to retrieve IP address.")
-    except IndexError:
-        print("Error: No IP address found for wlan0.")
+    except KeyError:
+        print("Error: No IP address found.")
 
-# Display all WiFi networks near the device
-def list_nearby_wifi():
+# Display all available WiFi networks
+def list_available_wifi():
     try:
-        wifi_list = subprocess.check_output(['iwlist', 'wlan0', 'scan']).decode('utf-8').split("ESSID:")
-        wifi_networks = [wifi.split("Encryption key:")[0].strip() for wifi in wifi_list if "Encryption key" in wifi]
-        print("\nWiFi Networks Near You:")
+        wifi_info = subprocess.check_output(['termux-wifi-scaninfo']).decode('utf-8')
+        wifi_info_json = json.loads(wifi_info)
+        wifi_networks = wifi_info_json.get('scan_results', [])
+        print("\n*AVAILABLE WIFI*")
         for network in wifi_networks:
-            print(network)
+            ssid = network.get('ssid', 'Unknown SSID')
+            bssid = network.get('bssid', 'Unknown BSSID')
+            print(f"SSID: {ssid}, BSSID: {bssid}")
     except subprocess.CalledProcessError:
         print("Error: Unable to retrieve WiFi network information.")
 
 get_ip_address()
-list_nearby_wifi()
+list_available_wifi()
