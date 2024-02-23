@@ -53,6 +53,7 @@ def loading_animation():
         sys.stdout.write('\rScanning... \\')
         sys.stdout.flush()
         time.sleep(0.1)
+        sys.stdout.write('\r')  # Move cursor back to the beginning of the line
 
 def scan_wifi():
     # Clear the screen and display the logo
