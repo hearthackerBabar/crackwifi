@@ -41,7 +41,7 @@ def list_available_wifi():
         for network in wifi_networks:
             ssid = network.get('ssid', 'Unknown SSID')
             bssid = network.get('bssid', 'Unknown BSSID')
-            print(f"SSID: {ssid}, BSSID: {bssid}")
+            print("SSID: {}, BSSID: {}".format(ssid, bssid))
     except subprocess.CalledProcessError:
         print("Error: Unable to retrieve WiFi network information.")
 
