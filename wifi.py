@@ -9,10 +9,6 @@ import os
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-# ANSI color codes
-GREEN = '\033[92m'  # Green color
-RESET = '\033[0m'    # Reset color
-
 # ASCII logo
 logo = '''
   ____       _      _____       _   
@@ -42,7 +38,7 @@ def scan_available_wifi():
             ssid = network.get('ssid', 'Unknown SSID')
             bssid = network.get('bssid', 'Unknown BSSID')
             # Display in green color
-            print(f"{i}. SSID: {GREEN}{ssid}{RESET}, BSSID: {GREEN}{bssid}{RESET}")
+            print(f"{i}. SSID: \033[92m{ssid}\033[0m, BSSID: \033[92m{bssid}\033[0m")
             # Reduce delay between each network print statement
             time.sleep(0.1)
     except (subprocess.CalledProcessError, json.JSONDecodeError):
@@ -68,7 +64,7 @@ def scan_wifi():
     print(logo)
     
     # Display "Scanning WiFi networks..." in green color
-    print(f"{GREEN}Scanning WiFi networks...{RESET}")
+    print("\033[92mScanning WiFi networks...\033[0m")
 
     loading_thread = threading.Thread(target=loading_animation)
     loading_thread.start()
