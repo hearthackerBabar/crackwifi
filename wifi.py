@@ -5,6 +5,9 @@ import time
 import threading
 import os
 
+# Clear the screen
+os.system('clear')
+
 # ASCII logo
 logo = '''
   ____       _      _____       _   
