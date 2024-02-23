@@ -7,6 +7,8 @@ def check_wifi_status():
         wifi_info_json = json.loads(wifi_info)
         wifi_state = wifi_info_json.get('state', 'UNKNOWN')
         return wifi_state == 'CONNECTED'
+    except FileNotFoundError:
+        return False
     except subprocess.CalledProcessError:
         return False
 
