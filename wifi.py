@@ -74,6 +74,7 @@ if __name__ == "__main__":
     print("2. Exit")
     choice = input("Enter your choice: ")
     if choice == '1':
+        print("\nScanning WiFi networks...")
         scan_wifi()
     elif choice == '2':
         print("Exiting...")
