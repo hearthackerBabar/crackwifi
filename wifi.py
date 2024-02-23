@@ -52,12 +52,24 @@ def loading_animation():
         sys.stdout.flush()
         time.sleep(0.1)
 
+def scan_wifi():
+    loading_animation_thread = threading.Thread(target=loading_animation)
+    loading_animation_thread.start()
+    scan_available_wifi()
+
 if __name__ == "__main__":
     print(logo)
-    wifi_status = check_wifi_status()
-    if not wifi_status:
-        print("Turn On Your Device Wifi")
+    print("1. Scan WiFi")
+    print("2. Exit")
+    choice = input("Enter your choice: ")
+    if choice == '1':
+        wifi_status = check_wifi_status()
+        if not wifi_status:
+            print("Turn On Your Device Wifi")
+        else:
+            scan_wifi()
+    elif choice == '2':
+        print("Exiting...")
+        sys.exit()
     else:
-        loading_animation_thread = threading.Thread(target=loading_animation)
-        loading_animation_thread.start()
-        scan_available_wifi()
+        print("Invalid choice. Please enter either 1 or 2.")
