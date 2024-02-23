@@ -67,6 +67,9 @@ def scan_wifi():
     clear_screen()
     print(logo)
     
+    # Display "Scanning WiFi networks..." in green color
+    print(f"{GREEN}Scanning WiFi networks...{RESET}")
+
     loading_thread = threading.Thread(target=loading_animation)
     loading_thread.start()
     scan_available_wifi()
@@ -79,7 +82,6 @@ if __name__ == "__main__":
     print("2. Exit")
     choice = input("Enter your choice: ")
     if choice == '1':
-        print("\nScanning WiFi networks...")
         scan_wifi()
     elif choice == '2':
         print("Exiting...")
