@@ -6,7 +6,8 @@ import threading
 import os
 
 # Clear the screen
-os.system('clear')
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 # ASCII logo
 logo = '''
@@ -28,7 +29,8 @@ def check_wifi_status():
 
 def scan_available_wifi():
     try:
-        wifi_info = subprocess.check_output(['termux-wifi-scaninfo']).decode('utf-8')
+        # Increase timeout for retrieving WiFi scan information
+        wifi_info = subprocess.check_output(['termux-wifi-scaninfo', '-t', '10']).decode('utf-8')
         wifi_info_json = json.loads(wifi_info)
         wifi_networks = wifi_info_json.get('scan_results', [])
         print("\n*AVAILABLE WIFI*")
@@ -36,26 +38,19 @@ def scan_available_wifi():
             ssid = network.get('ssid', 'Unknown SSID')
             bssid = network.get('bssid', 'Unknown BSSID')
             print("SSID: {}, BSSID: {}".format(ssid, bssid))
+            # Reduce delay between each network print statement
+            time.sleep(0.1)
     except (subprocess.CalledProcessError, json.JSONDecodeError):
         print("Error: Unable to retrieve WiFi network information.")
 
 def loading_animation():
     while True:
-        sys.stdout.write('\rScanning... |')
+        sys.stdout.write('\rScanning...')
         sys.stdout.flush()
-        time.sleep(0.1)
-
-        sys.stdout.write('\rScanning... /')
+        time.sleep(0.5)
+        sys.stdout.write('\r           ')
         sys.stdout.flush()
-        time.sleep(0.1)
-
-        sys.stdout.write('\rScanning... -')
-        sys.stdout.flush()
-        time.sleep(0.1)
-
-        sys.stdout.write('\rScanning... \\')
-        sys.stdout.flush()
-        time.sleep(0.1)
+        time.sleep(0.5)
 
 def scan_wifi():
     wifi_status = check_wifi_status()
@@ -64,7 +59,7 @@ def scan_wifi():
         return
 
     # Clear the screen and display the logo
-    os.system('clear')
+    clear_screen()
     print(logo)
     
     loading_thread = threading.Thread(target=loading_animation)
@@ -73,6 +68,7 @@ def scan_wifi():
     loading_thread.join()  # Wait for the loading animation to finish
 
 if __name__ == "__main__":
+    clear_screen()
     print(logo)
     print("1. Scan WiFi")
     print("2. Exit")
