@@ -75,7 +75,7 @@ def scan_wifi():
 if __name__ == "__main__":
     clear_screen()
     print(logo)
-    print("1. Scan WiFi")
+    print("1. Scan & Hack WiFi Network")
     print("2. Exit")
     choice = input("Enter your choice: ")
     if choice == '1':
